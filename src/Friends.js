@@ -1,7 +1,7 @@
 import React from "react";
 import Button from "./Components/Button";
 
-function Friends({ friend, onSplitBillForm, selectedFriend }) {
+function Friends({ friend, onSelectingFriend, selectedFriend }) {
   const choosenFriend = selectedFriend ? selectedFriend.id === friend.id : "";
 
   return (
@@ -19,7 +19,7 @@ function Friends({ friend, onSplitBillForm, selectedFriend }) {
       ) : (
         <p>You and {friend.name} are even</p>
       )}
-      <Button onClick={() => onSplitBillForm(friend)}>
+      <Button onClick={() => onSelectingFriend(friend)}>
         {choosenFriend ? "Close" : "Select"}
       </Button>
     </li>

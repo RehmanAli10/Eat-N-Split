@@ -6,52 +6,41 @@ import FormAddFriend from "./FormAddFriend";
 import FormSplitBill from "./FormSplitBill";
 
 function App() {
-  const [showFriendForm, setShowFriendForm] = useState(false);
+  const [showAddFriendForm, setShowAddFriendForm] = useState(false);
   const [selectedFriend, setSelectedFriend] = useState(null);
   const [updatedData, setUpdatedData] = useState(data);
 
-  console.log("Selected Friend", selectedFriend);
-
-  console.log(updatedData);
-
   const handleAddFriendForm = () => {
-    setShowFriendForm((showFriendForm) => !showFriendForm);
+    setShowAddFriendForm((showFriendForm) => !showFriendForm);
   };
 
   const handleAddFriend = (friend) => {
-    setUpdatedData(friend);
+    setUpdatedData((prevState) => [...prevState, friend]);
   };
 
-  const handleSplitBillForm = (friend) => {
-    setSelectedFriend(friend);
+  const handleSelectedFriend = (friend) => {
+    setSelectedFriend((curr) => (curr?.id === friend.id ? null : friend));
+    setShowAddFriendForm(false);
   };
 
   const handleSplitCalculation = (splittingUserExpense, option) => {
-    // Ensure splittingUserExpense is a valid number
-    if (isNaN(splittingUserExpense)) {
-      console.error("Invalid splittingUserExpense:", splittingUserExpense);
-      return;
-    }
+    if (isNaN(splittingUserExpense)) return;
 
-    // Find the selected friend in the updatedData array
     const selectedFriendIndex = updatedData.findIndex(
       (friend) => friend.id === selectedFriend.id
     );
 
     if (selectedFriendIndex !== -1) {
-      // Update the balance based on the selected option
       const updatedDataCopy = [...updatedData];
-      if (option === "you") {
-        updatedDataCopy[selectedFriendIndex].balance += splittingUserExpense;
+
+      if (option === "You") {
+        updatedDataCopy[selectedFriendIndex].balance =
+          updatedDataCopy[selectedFriendIndex].balance + splittingUserExpense;
+        setUpdatedData(updatedDataCopy);
       } else {
-        updatedDataCopy[selectedFriendIndex].balance -= splittingUserExpense;
+        updatedDataCopy[selectedFriendIndex].balance =
+          updatedDataCopy[selectedFriendIndex].balance - splittingUserExpense;
       }
-
-      // Log the updated data for debugging
-      console.log("Updated data:", updatedDataCopy);
-
-      // Set the updated data in the state
-      setUpdatedData(updatedDataCopy);
     } else {
       console.error("Selected friend not found in updatedData");
     }
@@ -62,11 +51,11 @@ function App() {
       <div className="sidebar">
         <FriendsList
           data={updatedData}
-          onSplitBillForm={handleSplitBillForm}
+          onSelectingFriend={handleSelectedFriend}
           selectedFriend={selectedFriend}
         />
 
-        {showFriendForm && (
+        {showAddFriendForm && (
           <FormAddFriend
             updatedData={updatedData}
             onAddFriend={handleAddFriend}
@@ -74,7 +63,7 @@ function App() {
         )}
 
         <Button onClick={handleAddFriendForm}>
-          {showFriendForm ? "Close" : "Add friend"}
+          {showAddFriendForm ? "Close" : "Add friend"}
         </Button>
       </div>
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "./Components/Button";
 
 function FormSplitBill({ selectedFriend, onSplitCalculation }) {
@@ -8,12 +8,21 @@ function FormSplitBill({ selectedFriend, onSplitCalculation }) {
 
   let splitingUserExpense =
     Number(yourExpense) > Number(bill)
-      ? setYourExpense(yourExpense.slice(0, 2))
+      ? setYourExpense((currYourExpense) => currYourExpense.slice(0, 2))
       : Number(bill) - Number(yourExpense);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (bill && yourExpense && selectedOption) {
+      onSplitCalculation(splitingUserExpense, selectedOption);
+    }
   };
+
+  useEffect(() => {
+    setBill("");
+    setYourExpense("");
+    setSelectedOption("You");
+  }, []);
 
   return (
     <form className="form-split-bill" onSubmit={handleSubmit}>
@@ -45,11 +54,7 @@ function FormSplitBill({ selectedFriend, onSplitCalculation }) {
         <option value="you">You</option>
         <option value="friend">{selectedFriend.name}</option>
       </select>
-      <Button
-        onClick={() => onSplitCalculation(splitingUserExpense, selectedOption)}
-      >
-        Split bill
-      </Button>
+      <Button>Split bill</Button>
     </form>
   );
 }

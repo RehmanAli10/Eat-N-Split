@@ -1,13 +1,13 @@
 import React from "react";
 import Friends from "./Friends";
-function FriendsList({ data, onSplitBillForm, selectedFriend }) {
+function FriendsList({ data, onSelectingFriend, selectedFriend }) {
   return (
     <ul>
       {data.map((friend) => (
         <Friends
           key={friend.id}
           friend={friend}
-          onSplitBillForm={onSplitBillForm}
+          onSelectingFriend={onSelectingFriend}
           selectedFriend={selectedFriend}
         />
       ))}
