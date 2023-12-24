@@ -1,28 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Button from "./Components/Button";
 
 function FormSplitBill({ selectedFriend, onSplitCalculation }) {
-  const [bill, setBill] = useState();
-  const [yourExpense, setYourExpense] = useState();
+  const [bill, setBill] = useState("");
+  const [yourExpense, setYourExpense] = useState("");
   const [selectedOption, setSelectedOption] = useState("You");
 
-  let splitingUserExpense =
-    Number(yourExpense) > Number(bill)
+  let splitingUserExpense = bill
+    ? Number(yourExpense) > Number(bill)
       ? setYourExpense((currYourExpense) => currYourExpense.slice(0, 2))
-      : Number(bill) - Number(yourExpense);
+      : Number(bill) - Number(yourExpense)
+    : "";
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (bill && yourExpense && selectedOption) {
-      onSplitCalculation(splitingUserExpense, selectedOption);
+      onSplitCalculation(splitingUserExpense, selectedOption, yourExpense);
     }
   };
-
-  useEffect(() => {
-    setBill("");
-    setYourExpense("");
-    setSelectedOption("You");
-  }, []);
 
   return (
     <form className="form-split-bill" onSubmit={handleSubmit}>
@@ -46,12 +41,12 @@ function FormSplitBill({ selectedFriend, onSplitCalculation }) {
       <input
         type="text"
         disabled
-        value={splitingUserExpense ? splitingUserExpense : bill}
+        value={splitingUserExpense >= 0 ? splitingUserExpense : bill}
       />
 
       <label>🤑 Who is paying the bill</label>
       <select onChange={(e) => setSelectedOption(e.target.value)}>
-        <option value="you">You</option>
+        <option value="You">You</option>
         <option value="friend">{selectedFriend.name}</option>
       </select>
       <Button>Split bill</Button>

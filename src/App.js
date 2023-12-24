@@ -15,7 +15,9 @@ function App() {
   };
 
   const handleAddFriend = (friend) => {
-    setUpdatedData((prevState) => [...prevState, friend]);
+    // setUpdatedData((data) => [...data, friend]);
+    setUpdatedData(friend);
+    setShowAddFriendForm(false);
   };
 
   const handleSelectedFriend = (friend) => {
@@ -23,7 +25,12 @@ function App() {
     setShowAddFriendForm(false);
   };
 
-  const handleSplitCalculation = (splittingUserExpense, option) => {
+  const handleSplitCalculation = (
+    splittingUserExpense,
+    option,
+    yourExpense
+  ) => {
+    setSelectedFriend(null);
     if (isNaN(splittingUserExpense)) return;
 
     const selectedFriendIndex = updatedData.findIndex(
@@ -39,7 +46,7 @@ function App() {
         setUpdatedData(updatedDataCopy);
       } else {
         updatedDataCopy[selectedFriendIndex].balance =
-          updatedDataCopy[selectedFriendIndex].balance - splittingUserExpense;
+          updatedDataCopy[selectedFriendIndex].balance - yourExpense;
       }
     } else {
       console.error("Selected friend not found in updatedData");

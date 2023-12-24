@@ -13,6 +13,7 @@ function FormAddFriend({ onAddFriend, updatedData }) {
     ];
     onAddFriend(newFriend);
   };
+
   return (
     <form className="form-add-friend" onSubmit={handleSubmit}>
       <label>👫 Friend name</label>
