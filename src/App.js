@@ -15,7 +15,6 @@ function App() {
   };
 
   const handleAddFriend = (friend) => {
-    // setUpdatedData((data) => [...data, friend]);
     setUpdatedData(friend);
     setShowAddFriendForm(false);
   };
@@ -78,6 +77,7 @@ function App() {
         <FormSplitBill
           selectedFriend={selectedFriend}
           onSplitCalculation={handleSplitCalculation}
+          key={selectedFriend.id}
         />
       )}
     </div>
